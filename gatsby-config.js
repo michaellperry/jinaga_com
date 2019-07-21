@@ -56,6 +56,12 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590
+            }
+          },
           `gatsby-remark-graphviz`,
           {
             resolve: `gatsby-remark-prismjs`,
@@ -84,5 +90,13 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     'gatsby-plugin-offline',
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-389401-11",
+        anonymize: true,
+        respectDNT: true,
+      },
+    },
   ],
 }
