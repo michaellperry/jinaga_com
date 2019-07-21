@@ -43,8 +43,12 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 exports.createPages = async ({ actions, graphql }) => {
     const { createPage } = actions;
   
-    (await loadDocumentPages(graphql)).forEach(page => createPage(page));
-    (await loadExamplePages(graphql)).forEach(page => createPage(page));
+    (await loadDocumentPages(graphql, 'documents', 'src/templates/documentTemplate.js'))
+        .forEach(page => createPage(page));
+    (await loadDocumentPages(graphql, 'yourfirstpwa', 'src/templates/yourFirstPwaTemplate.js'))
+        .forEach(page => createPage(page));
+    (await loadExamplePages(graphql))
+        .forEach(page => createPage(page));
 };
 
 exports.onCreateWebpackConfig = ({ actions }) => {
@@ -55,12 +59,12 @@ exports.onCreateWebpackConfig = ({ actions }) => {
     });
 };
 
-async function loadDocumentPages(graphql) {
-    const doumentTemplate = path.resolve("src/templates/documentTemplate.js");
+async function loadDocumentPages(graphql, folder, template) {
+    const doumentTemplate = path.resolve(template);
     const result = await graphql(`
         {
             allMarkdownRemark(filter: { 
-                fields: { slug: { glob: "/documents/**" }}
+                fields: { slug: { glob: "/${folder}/**" }}
                 }) {
                 edges {
                     node {
